@@ -9,6 +9,7 @@ const Login = () => {
 
   const [emailId, setEmailId] = useState("raina@gmail.com");
   const [password, setPassword] = useState("Suresh@123");
+  const [errmsg, setErrMsg] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,9 +25,8 @@ const Login = () => {
       dispatch(addUser(res.data))
       navigate("/")
       
-      
     } catch (error) {
-      console.error(error);
+      setErrMsg(error?.response?.data || "something went wrong")
     }
   }
 
@@ -81,6 +81,7 @@ const Login = () => {
             Must be more than 8 characters, including
             <br />At least one number <br />At least one lowercase letter <br />At least one uppercase letter
           </p>
+          <p className='text-red-600'>{errmsg}</p>
           <div className="card-actions justify-center">
             <button onClick={handleLogIn} className="btn btn-primary">Login</button>
           </div>
