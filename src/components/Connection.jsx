@@ -6,13 +6,13 @@ import { addConnection } from '../utils/connectionSlice'
 
 const Connection = () => {
 
-    const connections = useSelector((store) => store.connection)
+    const connections = useSelector((store) => store.connections)
     const dispatch = useDispatch();
 
     const fetchconnection = async () => {
         try {
             const res = await axios.get(BASE_URL + '/user/requests/connections', { withCredentials: true })
-            dispatch(addConnection(res.data.data))
+            dispatch(addConnection(res?.data?.data))
         } catch (error) {
             console.error(error.message)
         }
@@ -31,7 +31,6 @@ const Connection = () => {
             <h1 className='font-bold text-4xl text-center m-5'>Connections</h1>
             {connections.map((connection) => {
                 const { _id, firstName, lastName, age, gender, photoUrl } = connection;
-                console.log(photoUrl);
 
                 return (
                     <div key={_id} className='flex items-center p-4 rounded-lg bg-base-300 w-96 m-auto'>

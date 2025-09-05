@@ -23,6 +23,7 @@ const Feed = () => {
     getfeed();
   }, [])
 
+  if (!feed || feed.length === 0) return null
 
   return (feed && (
     <div className='flex justify-center my-10'>
