@@ -23,7 +23,7 @@ const Feed = () => {
     getfeed();
   }, [])
 
-  if (!feed || feed.length === 0) return null
+  if (!feed || feed.length === 0) return <h1 className='text-center font-bold text-3xl m-5'>No New Users To Connect With</h1>
 
   return (feed && (
     <div className='flex justify-center my-10'>

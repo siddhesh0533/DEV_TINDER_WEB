@@ -7,6 +7,9 @@ import { BASE_URL } from '../utils/constant';
 
 const Login = () => {
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
   const [emailId, setEmailId] = useState("viratkohli@18.com");
   const [password, setPassword] = useState("Virat@18");
   const [errmsg, setErrMsg] = useState("");
@@ -15,18 +18,28 @@ const Login = () => {
 
   const handleLogIn = async () => {
     try {
-      const res = await axios.post( BASE_URL + "/login", {
+      const res = await axios.post(BASE_URL + "/login", {
         emailId,
         password,
       },
-      {
-        withCredentials: true,
-      })
+        {
+          withCredentials: true,
+        })
       dispatch(addUser(res.data))
       navigate("/")
-      
+
     } catch (error) {
       setErrMsg(error?.response?.data || "something went wrong")
+    }
+  }
+
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(BASE_URL + '/signUp', { firstName, lastName, emailId, password }, { withCredentials: true })
+      dispatch(addUser(res.data))
+      navigate("/profile");
+    } catch (error) {
+      setErrMsg(error?.response?.data || "something went wrong");
     }
   }
 
@@ -34,7 +47,17 @@ const Login = () => {
     <div className='flex justify-center items-center min-h-[calc(100vh-250px)]'>
       <div className="card card-dash bg-base-200 w-96">
         <div className="card-body">
-          <h2 className="card-title justify-center text-2xl">Login</h2>
+          <h2 className="card-title justify-center text-2xl">{isLogin ? 'Login' : 'Sign Up'}</h2>
+          {!isLogin ? <><fieldset className="fieldset">
+            <legend className="fieldset-legend">FirstName</legend>
+            <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" className="input" placeholder="Type here" />
+            <p className="label text-red-600">{errmsg}</p>
+          </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">LastName</legend>
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" className="input" placeholder="Type here" />
+              <p className="label text-red-600">{errmsg}</p>
+            </fieldset></> : null}
           <label className="input validator my-4">
             <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <g
@@ -83,8 +106,9 @@ const Login = () => {
           </p>
           <p className='text-red-600'>{errmsg}</p>
           <div className="card-actions justify-center">
-            <button onClick={handleLogIn} className="btn btn-primary">Login</button>
+            <button onClick={isLogin ? handleLogIn : handleSignUp} className="btn btn-primary">{isLogin ? 'Login' : 'Sign Up'}</button>
           </div>
+          <p className='text-center' onClick={() => setIsLogin((value) => !value)}>{isLogin ? 'New user? Sign Up here ' : 'Existing User? Login here'}</p>
         </div>
       </div>
     </div>

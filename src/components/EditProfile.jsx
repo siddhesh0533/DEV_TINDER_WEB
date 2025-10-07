@@ -10,8 +10,8 @@ const EditProfile = ({ user }) => {
 
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
-    const [age, setAge] = useState(user.age);
-    const [gender, setGender] = useState(user.gender);
+    const [age, setAge] = useState(user.age || "");
+    const [gender, setGender] = useState(user.gender || "");
     const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
     const [errmsg, setErrMsg] = useState("");
     const dispatch = useDispatch();
@@ -26,12 +26,11 @@ const EditProfile = ({ user }) => {
                 gender,
                 photoUrl,
             },
-            { withCredentials: true, });
+                { withCredentials: true, });
             dispatch(addUser(res?.data?.data))
         } catch (error) {
-            console.log(error);
-
-            setErrMsg(error?.response?.data || "something went wrong")
+            console.error("PATCH error:", error);
+            setErrMsg(error?.response?.data || error.message || "something went wrong");
         }
     }
 
@@ -44,32 +43,27 @@ const EditProfile = ({ user }) => {
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">FirstName</legend>
                             <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" className="input" placeholder="Type here" />
-                            <p className="label text-red-600">{errmsg}</p>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">LastName</legend>
                             <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" className="input" placeholder="Type here" />
-                            <p className="label text-red-600">{errmsg}</p>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Gender</legend>
                             <input value={gender} onChange={(e) => setGender(e.target.value)} type="text" className="input" placeholder="Type here" />
-                            <p className="label text-red-600">{errmsg}</p>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Age</legend>
                             <input value={age} onChange={(e) => setAge(e.target.value)} type="number" className="input" placeholder="Type here" />
-                            <p className="label text-red-600">{errmsg}</p>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">PhotoUrl</legend>
                             <input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} type="text" className="input" placeholder="Type here" />
-                            <p className="label text-red-600">{errmsg}</p>
                         </fieldset>
-                        {/* <p className='text-red-600'>{errmsg}</p> */}
                         <div className="card-actions justify-center">
-                            <button onClick={handleSave} className="btn btn-primary">Save Profile</button>
+                            <button onClick={(e) => { e.preventDefault(); handleSave() }} className="btn btn-primary">Save Profile</button>
                         </div>
+                        <p className="justify-center label text-red-600">{errmsg}</p>
                     </div>
                 </div>
             </div>
