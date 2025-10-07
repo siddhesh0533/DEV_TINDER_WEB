@@ -3,7 +3,6 @@ import React from 'react'
 import { BASE_URL } from '../utils/constant';
 import { useDispatch } from 'react-redux';
 import { removefromfeed } from '../utils/feedSlice';
-import TestButton from './Test';
 
 const Card = ({user}) => {
 
@@ -35,7 +34,6 @@ const Card = ({user}) => {
                         <button className="btn btn-primary" onClick={()=>handleSendRequest("ignored", _id)}>Ignored</button>
                         <button className="btn btn-secondary" onClick={()=>handleSendRequest("interested", _id)}>Interested</button>
                     </div>}
-                    <TestButton/>
                 </div>
             </div>
         </div>
